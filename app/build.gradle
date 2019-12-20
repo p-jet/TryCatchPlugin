@@ -1,0 +1,53 @@
+apply plugin: 'com.android.application'
+apply plugin: 'add-trycatch'
+
+addTryCatch {
+    hookPoint = [
+            "cn.jet.test.trycatch.TestCrash1": [
+                    "crashMethod1",
+                    "crashMethod2"
+            ],
+            "cn.jet.test.trycatch.TestCrash2": [
+                    "crashMethod1",
+                    "crashMethod2"
+            ],
+            "cn.pjt.lib.TestA": [
+                    "doClick"
+            ]
+    ]
+    exceptionHandler = ["cn.jet.test.trycatch.ExceptionUtils": "uploadCatchedException"]
+}
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+    defaultConfig {
+        applicationId "cn.jet.test.trycatch"
+        minSdkVersion 16
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+
+    implementation(name: 'test', ext: 'aar')
+
+}

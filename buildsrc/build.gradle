@@ -1,0 +1,43 @@
+apply plugin: 'java-gradle-plugin'
+//apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'maven'
+
+gradlePlugin {
+    plugins {
+        addTryCatchPlugin {
+            id = 'add-trycatch'
+            implementationClass = 'cn.jet.plugin.trycatch.AddTryCatchPlugin'
+        }
+    }
+}
+
+dependencies {
+    implementation 'com.android.tools.build:gradle:3.5.3'
+    implementation('com.quinn.hunter:hunter-transform:0.9.3') {
+        exclude group: 'com.android.tools.build'
+    }
+}
+repositories {
+    google()
+    jcenter()
+    mavenCentral()
+}
+
+uploadArchives {
+    repositories.mavenDeployer {//用于发布本地maven
+        pom.groupId = "cn.jet.plugin"
+        pom.artifactId = "trycatch"
+        pom.version = "0.0.1"
+        repository(url: uri('../repo'))
+    }
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+    }
+}
+
